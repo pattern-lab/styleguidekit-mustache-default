@@ -21,7 +21,7 @@
 				{ "fonts/*": "styleguide/fonts/*" },
 				{ "html/index.html": "index.html" },
 				{ "images/*": "styleguide/images/*" },
-				{ "js/*": "styleguide/js/*" },
+				{ "js/*": "styleguide/js/*" }
 			],
 			"sourceDir": [
 				{ "css/styleguide-specific.css": "styleguide/css/styleguide-specific.css" }
