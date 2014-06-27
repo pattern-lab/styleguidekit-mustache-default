@@ -1,0 +1,27 @@
+	{{> viewall-header }}
+		
+		<!-- View All Patterns in a Pattern Sub-Type -->
+		<div class="sg-main" role="main">
+			
+			<!-- Patterns -->
+			<div id="sg-patterns">
+				{{# partials }}
+					{{# patternSectionSubtype }}
+						{{> patternSectionSubtype }}
+					{{/ patternSectionSubtype }}
+					{{^ patternSectionSubtype }}
+						{{> patternSection }}
+					{{/ patternSectionSubtype }}
+				{{/ partials }}
+			</div> <!--end #sg-patterns-->
+		
+		</div><!--end .sg-main-->
+		
+		<!-- JS to hook everything together and do annotations -->
+		<script>
+			// handle injection of items from builder
+			var patternPartial = "{{ patternPartial }}";
+			var lineage = "";
+		</script>
+		
+	{{> viewall-footer }}
