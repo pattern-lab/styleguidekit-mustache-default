@@ -1,5 +1,5 @@
 /*!
- * Basic postMessage Support - v0.1
+ * Basic postMessage Support
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -17,10 +17,11 @@ if (self != top) {
 	//   - pattern shares lineage
 	var path = window.location.toString();
 	var parts = path.split("?");
-	var options = { "path": parts[0] };
-	options.patternpartial = (patternPartial !== "") ? patternPartial : "all";
-	if (lineage !== "") {
-		options.lineage = lineage;
+	var options = { "event": "patternLab.pageLoad", "path": parts[0] };
+	
+	options.patternpartial = (patternData.patternPartial !== "") ? patternData.patternPartial : "all";
+	if (patternData.lineage !== "") {
+		options.lineage = patternData.lineage;
 	}
 	
 	var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
@@ -49,7 +50,7 @@ if (self != top) {
 	for (var i = 0; i < keys.length; i++) {
 		jwerty.key('ctrl+shift+'+keys[i],  function (k,t) {
 			return function(e) {
-				var obj = JSON.stringify({ "keyPress": "ctrl+shift+"+k });
+				var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "ctrl+shift+"+k });
 				parent.postMessage(obj,t);
 				return false;
 			}
@@ -62,7 +63,7 @@ if (self != top) {
 		jwerty.key('ctrl+shift+'+i, function (k,t) {
 			return function(e) {
 				var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-				var obj = JSON.stringify({ "keyPress": "ctrl+shift+"+k });
+				var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "ctrl+shift+"+k });
 				parent.postMessage(obj,t);
 				return false;
 			}
@@ -76,7 +77,7 @@ if (self != top) {
 var body = document.getElementsByTagName('body');
 body[0].onclick = function() {
 	var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-	var obj = JSON.stringify({ "bodyclick": "bodyclick" });
+	var obj = JSON.stringify({ "event": "patternLab.bodyClick", "bodyclick": "bodyclick" });
 	parent.postMessage(obj,targetOrigin);
 };
 
@@ -92,9 +93,9 @@ function receiveIframeMessage(event) {
 	}
 	
 	// see if it got a path to replace
-	if (data.path !== undefined) {
+	if (data.event == "patternLab.updatePath") {
 		
-		if (patternPartial !== "") {
+		if (patternData.patternPartial !== "") {
 			
 			// handle patterns and the view all page
 			var re = /(patterns|snapshots)\/(.*)$/;
@@ -109,7 +110,7 @@ function receiveIframeMessage(event) {
 			
 		}
 		
-	} else if (data.reload !== undefined) {
+	} else if (data.event == "patternLab.reload") {
 		
 		// reload the location if there was a message to do so
 		window.location.reload();

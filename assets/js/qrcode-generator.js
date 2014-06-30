@@ -1,5 +1,5 @@
 /*!
- * QR Code Generator - v0.1
+ * QR Code Generator
  *
  * Copyright (c) 2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license

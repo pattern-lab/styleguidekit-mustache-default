@@ -10,32 +10,32 @@
 (function ($, document, undefined) {
 
 	var pluses = /\+/g;
-
+	
 	function raw(s) {
 		return s;
 	}
-
+	
 	function decoded(s) {
 		return decodeURIComponent(s.replace(pluses, ' '));
 	}
-
+	
 	var config = $.cookie = function (key, value, options) {
-
+		
 		// write
 		if (value !== undefined) {
 			options = $.extend({}, config.defaults, options);
-
+			
 			if (value === null) {
 				options.expires = -1;
 			}
-
+			
 			if (typeof options.expires === 'number') {
 				var days = options.expires, t = options.expires = new Date();
 				t.setDate(t.getDate() + days);
 			}
-
+			
 			value = config.json ? JSON.stringify(value) : String(value);
-
+			
 			return (document.cookie = [
 				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
@@ -44,7 +44,7 @@
 				options.secure  ? '; secure' : ''
 			].join(''));
 		}
-
+		
 		// read
 		var decode = config.raw ? raw : decoded;
 		var cookies = document.cookie.split('; ');
@@ -55,12 +55,12 @@
 				return config.json ? JSON.parse(cookie) : cookie;
 			}
 		}
-
+		
 		return null;
 	};
-
+	
 	config.defaults = {};
-
+	
 	$.removeCookie = function (key, options) {
 		if ($.cookie(key) !== null) {
 			$.cookie(key, null, options);
@@ -72,7 +72,7 @@
 })(jQuery, document);
 
 /*!
- * Data Saver - v0.1
+ * Data Saver
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license

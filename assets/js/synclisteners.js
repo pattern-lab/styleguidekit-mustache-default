@@ -1,5 +1,5 @@
 /*!
- * Sync Listeners, v0.1
+ * Sync Listeners
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -75,7 +75,7 @@ function connectPageFollowSync() {
 	
 }
 
-if (pageFollowNav) {
+if (config.pageFollowNav) {
 	
 	// try to find the page follow websocket server
 	connectPageFollowSync();
@@ -132,7 +132,7 @@ function connectAutoReloadSync() {
 		// as a request var to, hopefully, bust caches... cachi(?)
 		wsc.onmessage = function () {
 			var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-			var obj = JSON.stringify({ "reload": true });
+			var obj = JSON.stringify({ "event": "patternLab.reload", "reload": true });
 			document.getElementById('sg-viewport').contentWindow.postMessage(obj,targetOrigin);
 		};
 		
@@ -151,7 +151,7 @@ function connectAutoReloadSync() {
 	
 }
 
-if (autoReloadNav) {
+if (config.autoReloadNav) {
 	
 	// try to find the auto-reload websocket server
 	connectAutoReloadSync();

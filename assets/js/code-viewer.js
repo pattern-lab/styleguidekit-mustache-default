@@ -1,5 +1,5 @@
 /*!
- * Code View Support for the Viewer - v0.1
+ * Code View Support for the Viewer
  *
  * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -82,12 +82,12 @@ var codeViewer = {
 		// make sure the annotations overlay is off before showing code view
 		$('#sg-t-annotations').removeClass('active');
 		annotationsViewer.commentsActive = false;
-		var obj = JSON.stringify({ "commentToggle": "off" });
+		var obj = JSON.stringify({ "event": "patternLab.annotationPanel", "commentToggle": "off" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
 		annotationsViewer.slideComment(999);
 		
 		// tell the iframe code view has been turned on
-		var obj = JSON.stringify({ "codeToggle": "on" });
+		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "on" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
 		
 		// note it's turned on in the viewer
@@ -100,7 +100,7 @@ var codeViewer = {
 	* after clicking the code view link close the panel
 	*/
 	closeCode: function() {
-		var obj = JSON.stringify({ "codeToggle": "off" });
+		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "off" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
 		codeViewer.codeActive = false;
 		codeViewer.slideCode($('#sg-code-container').outerHeight());
@@ -114,7 +114,7 @@ var codeViewer = {
 		
 		// the bulk of this template is in core/templates/index.mustache
 		if (document.getElementById("sg-code-container") === null) {
-			$('<div id="sg-code-container" class="sg-view-container"></div>').html($("#code-template").html()).appendTo('body').css('bottom',-$(document).outerHeight());
+			$('<div id="sg-code-container" class="sg-view-container"></div>').html("").appendTo('body').css('bottom',-$(document).outerHeight());
 			setTimeout(function(){ $('#sg-code-container').addClass('anim-ready'); },50); //Add animation class once container is positioned out of frame
 		}
 		
@@ -122,21 +122,6 @@ var codeViewer = {
 		$('body').delegate('#sg-code-close-btn','click',function() {
 			codeViewer.closeCode();
 			return false;
-		});
-		
-		// make sure the click events are handled on the HTML tab
-		$(codeViewer.ids["e"]).click(function() {
-			codeViewer.swapCode("e");
-		});
-		
-		// make sure the click events are handled on the Mustache tab
-		$(codeViewer.ids["m"]).click(function() {
-			codeViewer.swapCode("m");
-		});
-		
-		// make sure the click events are handled on the CSS tab
-		$(codeViewer.ids["c"]).click(function() {
-			codeViewer.swapCode("c");
 		});
 		
 	},
@@ -259,61 +244,39 @@ var codeViewer = {
 	* when turning on or switching between patterns with code view on make sure we get
 	* the code from from the pattern via post message
 	*/
-	updateCode: function(lineage,lineageR,patternPartial,patternState,cssEnabled) {
+	updateCode: function(patternData) {
 		
 		// clear any selections that might have been made
 		codeViewer.clearSelection();
 		
-		// draw lineage
-		if (lineage.length !== 0) {
-			var lineageList = "";
-			$("#sg-code-lineage").css("display","block");
-			for (var i = 0; i < lineage.length; i++) {
-				lineageList += (i === 0) ? "" : ", ";
-				var cssClass  = (lineage[i].lineageState != undefined) ? "sg-pattern-state "+lineage[i].lineageState : "";
-				lineageList += "<a href='"+lineage[i].lineagePath+"' class='"+cssClass+"' data-patternPartial='"+lineage[i].lineagePattern+"'>"+lineage[i].lineagePattern+"</a>";
-			}
-			$("#sg-code-lineage-fill").html(lineageList);
-		} else {
-			$("#sg-code-lineage").css("display","none");
+		// figure out if lineage should be drawn
+		patternData.lineageExists = false;
+		if (patternData.lineage.length !== 0) {
+			patternData.lineageExists = true;
 		}
 		
-		// draw reverse lineage
-		if (lineageR.length !== 0) {
-			var lineageRList = "";
-			$("#sg-code-lineager").css("display","block");
-			for (var i = 0; i < lineageR.length; i++) {
-				lineageRList += (i === 0) ? "" : ", ";
-				var cssClass  = (lineageR[i].lineageState != undefined) ? "sg-pattern-state "+lineageR[i].lineageState : "";
-				lineageRList += "<a href='"+lineageR[i].lineagePath+"' class='"+cssClass+"' data-patternPartial='"+lineageR[i].lineagePattern+"'>"+lineageR[i].lineagePattern+"</a>";
-			}
-			$("#sg-code-lineager-fill").html(lineageRList);
-		} else {
-			$("#sg-code-lineager").css("display","none");
+		// figure out if reverse lineage should be drawn
+		patternData.lineageRExists = false;
+		if (patternData.lineageR.length !== 0) {
+			patternData.lineageRExists = true;
 		}
+		
+		/* load code view */
+		var template         = document.getElementById("pl-code-template");
+		var templateCompiled = Hogan.compile(template.innerHTML);
+		var templateRendered = templateCompiled.render(patternData);
+		document.getElementById("sg-code-container").innerHTML = templateRendered;
 		
 		// when clicking on a lineage item change the iframe source
 		$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
 			e.preventDefault();
 			$("#sg-code-loader").css("display","block");
-			var obj = JSON.stringify({ "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
+			var obj = JSON.stringify({ "event": "patternLab.pathUpdate", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
 			document.getElementById("sg-viewport").contentWindow.postMessage(obj,codeViewer.targetOrigin);
 		});
 		
-		// show pattern state
-		if (patternState != "") {
-			$("#sg-code-patternstate").css("display","block");
-			var patternStateItem = "<span class=\"sg-pattern-state "+patternState+"\">"+patternState+"</span>";
-			$("#sg-code-patternstate-fill").html(patternStateItem);
-		} else {
-			$("#sg-code-patternstate").css("display","none");
-		}
-		
-		// fill in the name of the pattern
-		$('#sg-code-lineage-patternname, #sg-code-lineager-patternname, #sg-code-patternstate-patternname').html(patternPartial);
-		
 		// get the file name of the pattern so we can get the various editions of the code that can show in code view
-		var fileName = urlHandler.getFileName(patternPartial);
+		var fileName = urlHandler.getFileName(patternData.patternPartial);
 		
 		// request the encoded markup version of the pattern
 		var e = new XMLHttpRequest();
@@ -328,12 +291,27 @@ var codeViewer = {
 		m.send();
 		
 		// if css is enabled request the css for the pattern
-		if (cssEnabled) {
+		if (patternData.cssEnabled) {
 			var c = new XMLHttpRequest();
 			c.onload = this.saveCSS;
 			c.open("GET", fileName.replace(/\.html/,".css") + "?" + (new Date()).getTime(), true);
 			c.send();
 		}
+		
+		// make sure the click events are handled on the HTML tab
+		$(codeViewer.ids["e"]).click(function() {
+			codeViewer.swapCode("e");
+		});
+		
+		// make sure the click events are handled on the Mustache tab
+		$(codeViewer.ids["m"]).click(function() {
+			codeViewer.swapCode("m");
+		});
+		
+		// make sure the click events are handled on the CSS tab
+		$(codeViewer.ids["c"]).click(function() {
+			codeViewer.swapCode("c");
+		});
 		
 		// move the code into view
 		codeViewer.slideCode(0);
@@ -357,13 +335,16 @@ var codeViewer = {
 		}
 		
 		// switch based on stuff related to the postmessage
-		if (data.codeOverlay !== undefined) {
+		if ((data.event !== undefined) && (data.event == "patternLab.codePanel")) {
 			if (data.codeOverlay === "on") {
-				codeViewer.updateCode(data.lineage,data.lineageR,data.patternPartial,data.patternState,data.cssEnabled);
+				codeViewer.updateCode(data.patternData);
 			} else {
 				codeViewer.slideCode($('#sg-code-container').outerHeight());
 			}
-		} else if (data.keyPress !== undefined) {
+		}
+		
+		if ((data.event !== undefined) && (data.event == "patternLab.keyPress")) {
+			
 			if (data.keyPress == 'ctrl+shift+c') {
 				codeViewer.toggleCode();
 				return false;
@@ -386,6 +367,7 @@ var codeViewer = {
 					return false;
 				}
 			}
+			
 		}
 		
 	}
@@ -399,7 +381,7 @@ window.addEventListener("message", codeViewer.receiveIframeMessage, false);
 // make sure if a new pattern or view-all is loaded that comments are turned on as appropriate
 $('#sg-viewport').load(function() {
 	if (codeViewer.codeActive) {
-		var obj = JSON.stringify({ "codeToggle": "on" });
+		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "on" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
 	}
 });

@@ -1,5 +1,5 @@
 /*!
- * Code View Support for Patterns - v0.3
+ * Code View Support for Patterns
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -26,7 +26,7 @@ var codePattern = {
 			return;
 		}
 		
-		if (data.codeToggle !== undefined) {
+		if ((data.event !== undefined) && (data.event == "patternLab.codePanel")) {
 			
 			var els, i;
 			
@@ -52,7 +52,7 @@ var codePattern = {
 			// if comments overlay is turned on add the has-comment class and pointer
 			if (codePattern.codeOverlayActive) {
 				
-				var obj = JSON.stringify({ "codeOverlay": "on", "lineage": lineage, "lineageR": lineageR, "patternPartial": patternPartial, "patternState": patternState, "cssEnabled": cssEnabled });
+				var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeOverlay": "on", "patternData": patternData });
 				parent.postMessage(obj,codePattern.targetOrigin);
 				
 			} else if (codePattern.codeEmbeddedActive) {
@@ -76,7 +76,7 @@ window.addEventListener("message", codePattern.receiveIframeMessage, false);
 
 // before unloading the iframe make sure any active overlay is turned off/closed
 window.onbeforeunload = function() {
-	var obj = JSON.stringify({ "codeOverlay": "off" });
+	var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeOverlay": "off" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 };
 
@@ -84,7 +84,7 @@ window.onbeforeunload = function() {
 
 // toggle the code panel
 jwerty.key('ctrl+shift+c', function (e) {
-	var obj = JSON.stringify({ "keyPress": "ctrl+shift+c" });
+	var obj = JSON.stringify({ "event": "patternLab.codeKeyPress", "keyPress": "ctrl+shift+c" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });
@@ -92,7 +92,7 @@ jwerty.key('ctrl+shift+c', function (e) {
 // when the code panel is open hijack cmd+a so that it only selects the code view
 jwerty.key('cmd+a/ctrl+a', function (e) {
 	if (codePattern.codeOverlayActive) {
-		var obj = JSON.stringify({ "keyPress": "cmd+a" });
+		var obj = JSON.stringify({ "event": "patternLab.codeKeyPress", "keyPress": "cmd+a" });
 		parent.postMessage(obj,codePattern.targetOrigin);
 		return false;
 	}
@@ -100,21 +100,21 @@ jwerty.key('cmd+a/ctrl+a', function (e) {
 
 // open the mustache panel
 jwerty.key('ctrl+shift+u', function (e) {
-	var obj = JSON.stringify({ "keyPress": "ctrl+shift+u" });
+	var obj = JSON.stringify({ "event": "patternLab.codeKeyPress", "keyPress": "ctrl+shift+u" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });
 
 // open the html panel
 jwerty.key('ctrl+shift+h', function (e) {
-	var obj = JSON.stringify({ "keyPress": "ctrl+shift+h" });
+	var obj = JSON.stringify({ "event": "patternLab.codeKeyPress", "keyPress": "ctrl+shift+h" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });
 
 // close the code panel if using escape
 jwerty.key('esc', function (e) {
-	var obj = JSON.stringify({ "keyPress": "esc" });
+	var obj = JSON.stringify({ "event": "patternLab.codeKeyPress", "keyPress": "esc" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });

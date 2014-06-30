@@ -1,5 +1,5 @@
 /*!
- * Annotations Support for the Viewer - v0.3
+ * Annotations Support for the Viewer
  *
  * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -75,12 +75,12 @@ var annotationsViewer = {
 		// make sure the code view overlay is off before showing the annotations view
 		$('#sg-t-code').removeClass('active');
 		codeViewer.codeActive = false;
-		var obj = JSON.stringify({ "codeToggle": "off" });
+		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "off" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
 		codeViewer.slideCode(999);
 		
 		// tell the iframe annotation view has been turned on
-		var obj = JSON.stringify({ "commentToggle": "on" });
+		var obj = JSON.stringify({ "event": "patternLab.annotationPanel", "commentToggle": "on" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
 		
 		// note that it's turned on in the viewer
@@ -93,7 +93,7 @@ var annotationsViewer = {
 	*/
 	closeComments: function() {
 		annotationsViewer.commentsActive = false;
-		var obj = JSON.stringify({ "commentToggle": "off" });
+		var obj = JSON.stringify({"event": "patternLab.annotationPanel", "commentToggle": "off" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
 		annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
 		$('#sg-t-annotations').removeClass('active');
@@ -106,7 +106,7 @@ var annotationsViewer = {
 		
 		// the bulk of this template is in core/templates/index.mustache
 		if (document.getElementById("sg-annotation-container") === null) {
-			$('<div id="sg-annotation-container" class="sg-view-container"></div>').html($("#annotations-template").html()).appendTo('body').css('bottom',-$(document).outerHeight());
+			$('<div id="sg-annotation-container" class="sg-view-container"></div>').html("").appendTo('body').css('bottom',-$(document).outerHeight());
 			setTimeout(function(){ $('#sg-annotation-container').addClass('anim-ready'); },50); //Add animation class once container is positioned out of frame
 		}
 		
@@ -115,7 +115,7 @@ var annotationsViewer = {
 			annotationsViewer.commentsActive = false;
 			$('#sg-t-annotations').removeClass('active');
 			annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-			var obj = JSON.stringify({ "commentToggle": "off" });
+			var obj = JSON.stringify({"event": "patternLab.annotationPanel", "commentToggle": "off" });
 			document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
 			return false;
 		});
@@ -143,64 +143,13 @@ var annotationsViewer = {
 	* when turning on or switching between patterns with annotations view on make sure we get
 	* the annotations from from the pattern via post message
 	*/
-	updateComments: function(comments) {
+	updateComments: function(data) {
 		
-		var commentsContainer = document.getElementById("sg-comments-container");
-		
-		// clear out the comments container
-		if (commentsContainer.innerHTML !== "") {
-			commentsContainer.innerHTML = "";
-		}
-		
-		// see how many comments this pattern might have. if more than zero write them out. if not alert the user to the fact their aren't any
-		var count = Object.keys(comments).length;
-		if (count > 0) {
-			
-			for (i = 1; i <= count; i++) {
-				
-				var displayNum = comments[i].number;
-				
-				var span = document.createElement("span");
-				span.id = "annotation-state-" + displayNum;
-				span.style.fontSize = "0.8em";
-				span.style.color    = "#666";
-				if (comments[i].state === false) {
-					span.innerHTML  = " hidden";
-				}
-				
-				var h2 = document.createElement("h2");
-				h2.innerHTML  = displayNum + ". " + comments[i].title;
-				h2.appendChild(span);
-				
-				var div = document.createElement("div");
-				div.innerHTML = comments[i].comment;
-				
-				var commentDiv = document.createElement("div");
-				commentDiv.classList.add("sg-comment-container");
-				commentDiv.id = "annotation-" + displayNum;
-				commentDiv.appendChild(h2);
-				commentDiv.appendChild(div);
-				
-				commentsContainer.appendChild(commentDiv);
-				
-			}
-			
-		} else {
-			
-			var h2        = document.createElement("h2");
-			h2.innerHTML  = "No Annotations";
-			
-			var div       = document.createElement("div");
-			div.innerHTML = "There are no annotations for this pattern.";
-			
-			var commentDiv = document.createElement("div");
-			commentDiv.classList.add("sg-comment-container");
-			commentDiv.appendChild(h2);
-			commentDiv.appendChild(div);
-			
-			commentsContainer.appendChild(commentDiv);
-			
-		}
+		/* load annotation view */
+		var template         = document.getElementById("pl-annotations-template");
+		var templateCompiled = Hogan.compile(template.innerHTML);
+		var templateRendered = templateCompiled.render(data);
+		document.getElementById("sg-annotation-container").innerHTML = templateRendered;
 		
 		// slide the comment section into view
 		annotationsViewer.slideComment(0);
@@ -226,31 +175,35 @@ var annotationsViewer = {
 			return;
 		}
 		
-		if (data.commentOverlay !== undefined) {
-			if (data.commentOverlay === "on") {
-				annotationsViewer.updateComments(data.comments);
-			} else {
-				annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-			}
-		} else if (data.annotationState !== undefined) {
-			document.getElementById("annotation-state-"+data.displayNumber).innerHTML = (data.annotationState == true) ? "" : " hidden";
-		} else if (data.displaynumber !== undefined) {
-			annotationsViewer.moveTo(data.displaynumber);
-		} else if (data.keyPress !== undefined) {
-			if (data.keyPress == 'ctrl+shift+a') {
-				annotationsViewer.toggleComments();
-				return false;
-			} else if (data.keyPress == 'esc') {
-				if (annotationsViewer.commentsActive) {
-					annotationsViewer.closeComments();
+		if (data.event !== undefined) {
+			
+			if (data.event == "patternLab.annotationPanel") {
+				if (data.commentOverlay === "on") {
+					annotationsViewer.updateComments(data);
+				} else {
+					annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
+				}
+			} else if (data.event == "patternLab.annotationUpdateState") {
+				document.getElementById("annotation-state-"+data.displayNumber).innerHTML = (data.annotationState == true) ? "" : " hidden";
+			} else if (data.event == "patternLab.annotationNumberClicked") {
+				annotationsViewer.moveTo(data.displaynumber);
+			} else if (data.event == "patternLab.keyPress") {
+				if (data.keyPress == 'ctrl+shift+a') {
+					annotationsViewer.toggleComments();
 					return false;
+				} else if (data.keyPress == 'esc') {
+					if (annotationsViewer.commentsActive) {
+						annotationsViewer.closeComments();
+						return false;
+					}
+				}
+			} else if (data.event == "patternLab.pageLoad") {
+				if (annotationsViewer.commentsViewAllActive && (data.patternpartial.indexOf("viewall-") != -1)) {
+					var obj = JSON.stringify({ "commentToggle": "on" });
+					document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
 				}
 			}
-		} else if (data.patternpartial !== undefined) {
-			if (annotationsViewer.commentsViewAllActive && (data.patternpartial.indexOf("viewall-") != -1)) {
-				var obj = JSON.stringify({ "commentToggle": "on" });
-				document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-			}
+			
 		}
 		
 	}

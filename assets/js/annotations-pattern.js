@@ -1,5 +1,5 @@
 /*!
- * Annotations Support for Patterns - v0.3
+ * Annotations Support for Patterns
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -12,7 +12,7 @@ var annotationsPattern = {
 	commentsOverlay:        false,
 	commentsEmbeddedActive: false,
 	commentsEmbedded:       false,
-	commentsGathered:       { "commentOverlay": "on", "comments": { } },
+	commentsGathered:       { "event": "patternLab.annotationPanel", "commentOverlay": "on", "comments": [ ] },
 	trackedElements:        [ ],
 	targetOrigin:           (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host,
 	
@@ -44,7 +44,7 @@ var annotationsPattern = {
 									e.stopPropagation();
 									
 									// if an element was clicked on while the overlay was already on swap it
-									var obj = JSON.stringify({ "displaynumber": item.displaynumber, "el": item.el, "title": item.title, "comment": item.comment });
+									var obj = JSON.stringify({"event": "patternLab.annotationNumberClicked", "displaynumber": item.displaynumber, "el": item.el, "title": item.title, "comment": item.comment });
 									parent.postMessage(obj,annotationsPattern.targetOrigin);
 									
 								}
@@ -59,7 +59,7 @@ var annotationsPattern = {
 			
 		} else {
 			
-			var obj = JSON.stringify({ "commentOverlay": "off" });
+			var obj = JSON.stringify({"event": "patternLab.annotationPanel", "commentOverlay": "off" });
 			parent.postMessage(obj,annotationsPattern.targetOrigin);
 			
 		}
@@ -136,22 +136,22 @@ var annotationsPattern = {
 			return;
 		}
 		
-		if ((data.resize !== undefined) && (annotationsPattern.commentsOverlayActive)) {
+		if ((data.event !== undefined) && (data.event == "patternLab.resize") && (annotationsPattern.commentsOverlayActive)) {
 			
 			for (var i = 0; i < annotationsPattern.trackedElements.length; ++i) {
 				var el = annotationsPattern.trackedElements[i];
 				if (window.getComputedStyle(el.element,null).getPropertyValue("max-height") == "0px") {
 					el.element.firstChild.style.display = "none";
-					var obj = JSON.stringify({"annotationState": false, "displayNumber": el.displayNumber });
+					var obj = JSON.stringify({"event": "patternLab.annotationUpdateState", "annotationState": false, "displayNumber": el.displayNumber });
 					parent.postMessage(obj,annotationsPattern.targetOrigin);
 				} else {
 					el.element.firstChild.style.display = "block";
-					var obj = JSON.stringify({"annotationState": true, "displayNumber": el.displayNumber });
+					var obj = JSON.stringify({"event": "patternLab.annotationUpdateState", "annotationState": true, "displayNumber": el.displayNumber });
 					parent.postMessage(obj,annotationsPattern.targetOrigin);
 				}
 			}
 			
-		} else if (data.commentToggle !== undefined) {
+		} else if ((data.event !== undefined) && (data.event == "patternLab.annotationPanel")) {
 			
 			var i, els, item, displayNum;
 			
@@ -229,7 +229,7 @@ var annotationsPattern = {
 				var count = 0;
 				
 				// iterate over the comments in annotations.js
-				for(i = 0; i < comments.comments.length; i++) {
+				for (i = 0; i < comments.comments.length; i++) {
 					
 					var state = true;
 					
@@ -244,7 +244,8 @@ var annotationsPattern = {
 								state = false;
 							}
 						}
-						annotationsPattern.commentsGathered.comments[count] = { "el": item.el, "title": item.title, "comment": item.comment, "number": count, "state": state };
+						var comment = { "el": item.el, "title": item.title, "comment": item.comment, "number": count, "state": state };
+						annotationsPattern.commentsGathered.comments.push(comment);
 					}
 				
 				}
@@ -287,7 +288,7 @@ window.addEventListener("message", annotationsPattern.receiveIframeMessage, fals
 
 // before unloading the iframe make sure any active overlay is turned off/closed
 window.onbeforeunload = function() {
-	var obj = JSON.stringify({ "commentOverlay": "off" });
+	var obj = JSON.stringify({ "event": "patternLab.annotationPanel", "commentOverlay": "off" });
 	parent.postMessage(obj,annotationsPattern.targetOrigin);
 };
 
@@ -295,14 +296,14 @@ window.onbeforeunload = function() {
 
 // toggle the annotations panel
 jwerty.key('ctrl+shift+a', function (e) {
-	var obj = JSON.stringify({ "keyPress": "ctrl+shift+a" });
+	var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "ctrl+shift+a" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });
 
 // close the annotations panel if using escape
 jwerty.key('esc', function (e) {
-	var obj = JSON.stringify({ "keyPress": "esc" });
+	var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "esc" });
 	parent.postMessage(obj,codePattern.targetOrigin);
 	return false;
 });

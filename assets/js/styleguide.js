@@ -2,8 +2,8 @@
 	
 	var sw = document.body.clientWidth, //Viewport Width
 		sh = $(document).height(), //Viewport Height
-		minViewportWidth = ishMinimum, //Minimum Size for Viewport
-		maxViewportWidth = ishMaximum, //Maxiumum Size for Viewport
+		minViewportWidth = parseInt(config.ishminimum), //Minimum Size for Viewport
+		maxViewportWidth = parseInt(config.ishmaximum), //Maxiumum Size for Viewport
 		viewportResizeHandleWidth = 14, //Width of the viewport drag-to-resize handle
 		$sgViewport = $('#sg-viewport'), //Viewport element
 		$sizePx = $('.sg-size-px'), //Px size input element in toolbar
@@ -341,7 +341,7 @@
 		$sgViewport.width(theSize); //Resize viewport to desired size
 		
 		var targetOrigin = (window.location.protocol === "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-		var obj = JSON.stringify({ "resize": "true" });
+		var obj = JSON.stringify({ "event": "patternLab.resize", "resize": "true" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,targetOrigin);
 		
 		updateSizeReading(theSize); //Update values in toolbar
@@ -350,7 +350,7 @@
 	
 	$("#sg-gen-container").on('transitionend webkitTransitionEnd', function(e){
 		var targetOrigin = (window.location.protocol === "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-		var obj = JSON.stringify({ "resize": "true" });
+		var obj = JSON.stringify({ "event": "patternLab.resize", "resize": "true" });
 		document.getElementById('sg-viewport').contentWindow.postMessage(obj,targetOrigin);
 	});
 	
@@ -525,7 +525,7 @@
 	$('a[data-patternpartial]').on("click", function(e){
 		e.preventDefault();
 		// update the iframe via the history api handler
-		var obj = JSON.stringify({ "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
+		var obj = JSON.stringify({ "event": "patternLab.updatePath", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
 		document.getElementById("sg-viewport").contentWindow.postMessage(obj, urlHandler.targetOrigin);
 		closePanels();
 	});
@@ -560,11 +560,11 @@
 			return;
 		}
 		
-		if (data.bodyclick !== undefined) {
+		if (data.event == "patternLab.bodyclick") {
 			
 			closePanels();
 			
-		} else if (data.patternpartial !== undefined) {
+		} else if (data.event == "patternLab.pageLoad") {
 			
 			if (!urlHandler.skipBack) {
 				
@@ -581,7 +581,7 @@
 			// reset the defaults
 			urlHandler.skipBack = false;
 			
-		} else if (data.keyPress !== undefined) {
+		} else if (data.event == "patternLab.keyPress") {
 			if (data.keyPress == 'ctrl+shift+s') {
 				goSmall();
 			} else if (data.keyPress == 'ctrl+shift+m') {
@@ -614,13 +614,13 @@
 	}
 	window.addEventListener("message", receiveIframeMessage, false);
 	
-	if (qrCodeGeneratorOn) {
+	/*if (qrCodeGeneratorOn) {
 		$('.sg-tools').click(function() {
 			if ((qrCodeGenerator.lastGenerated == "") || (qrCodeGenerator.lastGenerated != window.location.search)) {
 				qrCodeGenerator.getQRCode();
 				qrCodeGenerator.lastGenerated = window.location.search;
 			}
 		});
-	}
+	}*/
 	
 })(this);

@@ -1,5 +1,5 @@
 /*!
- * URL Handler - v0.1
+ * URL Handler
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
@@ -134,7 +134,7 @@ var urlHandler = {
 		var expectedPath = window.location.protocol+"//"+window.location.host+path+fileName;
 		if (givenPath != expectedPath) {
 			// make sure to update the iframe because there was a click
-			var obj = JSON.stringify({ "path": fileName });
+			var obj = JSON.stringify({ "event": "patternLab.updatePath", "path": fileName });
 			document.getElementById("sg-viewport").contentWindow.postMessage(obj, urlHandler.targetOrigin);
 		} else {
 			// add to the history
@@ -171,7 +171,7 @@ var urlHandler = {
 			iFramePath = "styleguide/html/styleguide.html";
 		}
 		
-		var obj = JSON.stringify({ "path": iFramePath });
+		var obj = JSON.stringify({ "event": "patternLab.updatePath", "path": iFramePath });
 		document.getElementById("sg-viewport").contentWindow.postMessage( obj, urlHandler.targetOrigin);
 		document.getElementById("title").innerHTML = "Pattern Lab - "+patternName;
 		document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(patternName));
