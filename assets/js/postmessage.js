@@ -19,7 +19,7 @@ if (self != top) {
 	var parts = path.split("?");
 	var options = { "event": "patternLab.pageLoad", "path": parts[0] };
 	
-	options.patternpartial = (patternData.patternPartial !== "") ? patternData.patternPartial : "all";
+	options.patternpartial = (patternData.patternPartial !== undefined) ? patternData.patternPartial : "all";
 	if (patternData.lineage !== "") {
 		options.lineage = patternData.lineage;
 	}
@@ -95,7 +95,7 @@ function receiveIframeMessage(event) {
 	// see if it got a path to replace
 	if (data.event == "patternLab.updatePath") {
 		
-		if (patternData.patternPartial !== "") {
+		if (patternData.patternPartial !== undefined) {
 			
 			// handle patterns and the view all page
 			var re = /(patterns|snapshots)\/(.*)$/;
