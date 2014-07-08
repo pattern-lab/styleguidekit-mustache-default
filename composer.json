@@ -1,17 +1,28 @@
 {
-	"name":             "PatternLab/DefaultStyleguideKit",
-	"description":      "The default styleguide mark-up and styles for Pattern Lab",
+	"name":             "pattern-lab/styleguidekit-mustache-default",
+	"description":      "The default Mustache-based styleguide mark-up and styles for Pattern Lab",
 	"keywords":         ["mustache", "pattern lab", "styleguide"],
 	"homepage":         "http://patternlab.io",
 	"license":          "MIT",
+	"type":             "patternlab-styleguidekit",
 	"authors": [
 		{
 			"name":         "Dave Olsen",
 			"email":        "dmolsen@gmail.com",
 			"homepage":     "http://dmolsen.com",
 			"role":         "Lead Developer"
+		},
+		{
+			"name":         "Brad Frost",
+			"homepage":     "http://bradfrostweb.com",
+			"role":         "Creator"
 		}
 	],
+	"support": {
+		"issues":         "https://github.com/pattern-lab/styleguidekit-mustache-default/issues",
+		"wiki":           "http://patternlab.io/docs/",
+		"source":         "https://github.com/pattern-lab/styleguidekit-mustache-default/releases"
+	},
 	"extra": {
 		"assets": {
 			"publicDir": [
@@ -27,9 +38,8 @@
 				{ "css/styleguide-specific.css": "styleguide/css/styleguide-specific.css" }
 			]
 		},
-		"composerRun": false,
-		"configUpdate": true,
-		"configOption": "styleguideKit",
-		"configValue": "styleguidekit-mustache-default-master"
+		"config": [
+			{ "styleguideKit": "pattern-lab/styleguidekit-mustache-default" }
+		]
 	}
 }
