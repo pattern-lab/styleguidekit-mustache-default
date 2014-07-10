@@ -24,22 +24,24 @@
 		"source":         "https://github.com/pattern-lab/styleguidekit-mustache-default/releases"
 	},
 	"extra": {
-		"assets": {
-			"publicDir": [
-				{ "bower_components/*": "styleguide/bower_components/*" },
-				{ "css/styleguide.css": "styleguide/css/styleguide.css" },
-				{ "css/typeahead.css": "styleguide/css/typeahead.css" },
-				{ "fonts/*": "styleguide/fonts/*" },
-				{ "html/index.html": "index.html" },
-				{ "images/*": "styleguide/images/*" },
-				{ "js/*": "styleguide/js/*" }
-			],
-			"sourceDir": [
-				{ "css/styleguide-specific.css": "styleguide/css/styleguide-specific.css" }
+		"patternlab": {
+			"assets": {
+				"publicDir": [
+					{ "bower_components/*": "styleguide/bower_components/*" },
+					{ "css/styleguide.css": "styleguide/css/styleguide.css" },
+					{ "css/typeahead.css": "styleguide/css/typeahead.css" },
+					{ "fonts/*": "styleguide/fonts/*" },
+					{ "html/index.html": "index.html" },
+					{ "images/*": "styleguide/images/*" },
+					{ "js/*": "styleguide/js/*" }
+				],
+				"sourceDir": [
+					{ "css/styleguide-specific.css": "styleguide/css/styleguide-specific.css" }
+				]
+			},
+			"config": [
+				{ "styleguideKit": "pattern-lab/styleguidekit-mustache-default" }
 			]
-		},
-		"config": [
-			{ "styleguideKit": "pattern-lab/styleguidekit-mustache-default" }
-		]
+		}
 	}
 }
