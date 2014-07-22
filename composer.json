@@ -28,6 +28,9 @@
 		"pattern-lab/styleguidekit-assets-default": "dev-dev"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-master": "dev-dev"
+		},
 		"patternlab": {
 			"config": [
 				{ "styleguideKit": "pattern-lab/styleguidekit-mustache-default" }
