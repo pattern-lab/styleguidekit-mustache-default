@@ -25,7 +25,7 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
-		"pattern-lab/styleguidekit-assets-default": "dev-master"
+		"pattern-lab/styleguidekit-assets-default": "dev-dev"
 	},
 	"extra": {
 		"patternlab": {
