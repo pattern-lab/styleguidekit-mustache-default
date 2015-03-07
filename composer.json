@@ -26,5 +26,6 @@
 	"minimum-stability": "dev",
 	"require": {
 		"pattern-lab/styleguidekit-assets-default": "dev-dev"
+		"pattern-lab/patternengine-mustache": "dev-dev"
 	}
 }
