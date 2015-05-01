@@ -1,7 +1,7 @@
 <div id="{{ patternPartial }}" class="sg-pattern">
 	<div class="sg-pattern-head">
 		<h3><a href="../../patterns/{{ patternLink }}" class="patternLink" data-patternpartial="{{ patternPartial }}" title="Link to Pattern">{{ patternName }}</a></h3>
-		<a href="#{{ patternPartial }}-extra" title="View Pattern Info" class="sg-pattern-extra-toggle">&#9660;</a>
+		<a href="#{{ patternPartial }}-extra" title="View Pattern Info" class="sg-pattern-extra-toggle"><span>&#9660;</span></a>
 	</div>
 	<div class="sg-pattern-extra" id="{{ patternPartial }}-extra">
 		<div class="sg-pattern-extra-info">
@@ -48,13 +48,13 @@
 		<div class="sg-pattern-extra-code">
 			<div class="sg-tab">
 				<ul class="sg-tab-list">
-				    <li><a href="#{{ patternPartial }}-tab-1" class="active">HTML</a></li>
-				    <li><a href="#{{ patternPartial }}-tab-2">Mustache</a></li>
-				    <li><a href="#{{ patternPartial }}-tab-3">CSS</a></li>
-				    <li><a href="#{{ patternPartial }}-tab-4">JS</a></li>
+				    <li><a href="#{{ patternPartial }}-tab-panel-1" class="active">HTML</a></li>
+				    <li><a href="#{{ patternPartial }}-tab-panel-2">Mustache</a></li>
+				    <li><a href="#{{ patternPartial }}-tab-panel-3">CSS</a></li>
+				    <li><a href="#{{ patternPartial }}-tab-panel-4">JS</a></li>
 				</ul>
 				<div class="sg-tab-content">
-					<div class="sg-tab-panel" id="sg-tab-panel-1">
+					<div class="sg-tab-panel active" id="{{ patternPartial }}-tab-panel-1">
 						<div class="sg-pattern-extra-html">
 							<pre>
 								<code id="sg-pattern-extra-html-container" class="language-markup">
@@ -63,7 +63,7 @@
 							</pre>
 						</div>
 					</div><!--end .sg-tab-panel-->
-					<div class="sg-tab-panel" id="sg-tab-panel-2">
+					<div class="sg-tab-panel" id="{{ patternPartial }}-tab-panel-2">
 						<div class="sg-pattern-extra-engine">
 							<pre>
 								<code id="sg-pattern-extra-engine-container" class="language-markup">
@@ -72,7 +72,7 @@
 						</div>
 					</div><!--end .sg-tab-panel-->
 					{{# patternCSSExists }}
-					<div class="sg-tab-panel" id="sg-tab-panel-3">
+					<div class="sg-tab-panel" id="{{ patternPartial }}-tab-panel-3">
 						<div class="sg-pattern-extra-css">
 							<pre>
 								<code id="sg-pattern-extra-css-container" class="language-css">
