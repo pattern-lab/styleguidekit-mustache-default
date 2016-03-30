@@ -1,14 +1,14 @@
 {
-  "name": "styleguide-mustache-default",
+  "name": "styleguidekit-mustache-default",
   "description": "The default Mustache-based StyleguideKit for Pattern Lab. Contains styles and mark-up for Pattern Lab's front-end.",
   "version": "0.1.0",
   "dependencies": {
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/pattern-lab/styleguide-mustache-default.git"
+    "url": "git://github.com/pattern-lab/styleguidekit-mustache-default.git"
   },
-  "bugs": "https://github.com/pattern-lab/styleguide-mustache-default/issues",
+  "bugs": "https://github.com/pattern-lab/styleguidekit-mustache-default/issues",
   "authors": [
     {
       "name":         "Dave Olsen",
