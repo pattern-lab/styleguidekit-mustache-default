@@ -27,8 +27,5 @@
       "role":         "Developer"
     }
   ],
-  "license": "MIT",
-  "engines": {
-    "node": ">=5.0"
-  }
+  "license": "MIT"
 }
