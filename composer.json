@@ -25,8 +25,8 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
-		"pattern-lab/core": "^2.0.0",
-		"pattern-lab/patternengine-mustache": "^2.0.0",
-		"pattern-lab/styleguidekit-assets-default": "^2.0.0"
+		"pattern-lab/core": "dev-dev",
+		"pattern-lab/patternengine-mustache": "dev-dev",
+		"pattern-lab/styleguidekit-assets-default": "dev-dev"
 	}
 }
