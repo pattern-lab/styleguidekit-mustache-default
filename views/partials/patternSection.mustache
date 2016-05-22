@@ -1,58 +1,16 @@
 <div id="{{ patternPartial }}" class="sg-pattern">
 	<div class="sg-pattern-head">
 		<h3><a href="../../patterns/{{ patternLink }}" class="patternLink" data-patternpartial="{{ patternPartial }}" title="Link to Pattern">{{ patternName }}</a></h3>
+		<div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 		<a href="#" data-patternpartial="{{ patternPartial }}" title="View Pattern Info" id="sg-pattern-extra-toggle-{{patternPartial}}" class="sg-pattern-extra-toggle"><span>&#9660;</span></a>
 	</div>
 	<div class="sg-pattern-extra" id="sg-pattern-extra-{{ patternPartial }}">
-		<div class="sg-pattern-extra-info">
-			{{# patternDescExists }}
-			<div class="sg-pattern-desc">
-				<div>{{{ patternDesc }}}</div>
-				{{# patternDescAdditions }}
-					{{{ . }}}
-				{{/ patternDescAdditions }}
-			</div>
-			{{/ patternDescExists }}
-			{{# patternExampleAdditions }}
-				{{{ . }}}
-			{{/ patternExampleAdditions }}
-			<div class="sg-pattern-extra-annotations">
-				<div id="sg-pattern-extra-annotations-container">
-				</div>
-			</div><!--end .sg-pattern-extra-annotations-->
-			<div class="sg-pattern-extra-lineage">
-				{{# patternLineageExists }}
-				<div class="sg-pattern-extra-lineage">
-					The <span class="sg-pattern-extra-lineage-name">{{ patternPartial }}</span> pattern contains the following pattern(s):
-					<ul>
-					{{# patternLineages }}
-						<li> <a href="{{ lineagePath }}" class="{{# lineageState }}sg-pattern-state {{.}} {{/ lineageState }}" data-patternpartial="{{ lineagePattern }}">{{ lineagePattern }}</a></li>
-					{{/ patternLineages }}
-					</ul>
-				</div>
-				{{/ patternLineageExists }}
-				{{# patternLineageRExists }}
-				<div class="sg-pattern-extra-lineage">
-					The <span class="sg-pattern-extra-lineage-name">{{ patternPartial }}</span> pattern is included in the following pattern(s):
-					<ul>
-					{{# patternLineagesR }}
-						<li> <a href="{{ lineagePath }}" class="{{# lineageState }}sg-pattern-state {{.}} {{/ lineageState }}" data-patternpartial="{{ lineagePattern }}">{{ lineagePattern }}</a></li>
-					{{/ patternLineagesR }}
-					</ul>
-				</div>
-				{{/ patternLineageRExists }}
-				{{^ patternLineageEExists }}
-				{{/ patternLineageEExists }}
-			</div><!--end .sg-pattern-extra-lineage-->
-		</div><!--end .sg-pattern-extra-info-->
-		<div id="sg-pattern-extra-code-{{patternPartial}}" class="sg-pattern-extra-code">
-			
-		</div><!--end .sg-pattern-extra-code-->
-	</div><!--end .sg-pattern-extra-->
+	
+	</div>
 	<div class="sg-pattern-example">
 		{{{ patternPartialCode }}}
 	</div>
-	<script type="text/json" id="sg-pattern-info-{{patternPartial}}" class="sg-pattern-info">
+	<script type="text/json" id="sg-pattern-data-{{patternPartial}}" class="sg-pattern-data">
 		{{{ patternData }}}
 	</script>
 </div><!--end .sg-pattern-->
