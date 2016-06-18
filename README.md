@@ -10,5 +10,5 @@ The default Mustache StyleguideKit provides the basic front-end assets when usin
 The default Mustache StyleguideKit can be installed via Composer:
 
     composer require pattern-lab/styleguidekit-mustache-default
-		
+
 Learn more about this StyleguideKit's dependencies on [Packagist](https://packagist.org/packages/pattern-lab/styleguidekit-mustache-default).
