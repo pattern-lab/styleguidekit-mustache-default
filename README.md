@@ -1,4 +1,4 @@
-![license](https://img.shields.io/github/license/pattern-lab/styleguidekit-mustache-default.svg?maxAge=2592000)]
+![license](https://img.shields.io/github/license/pattern-lab/styleguidekit-mustache-default.svg?maxAge=2592000)
 [![Packagist](https://img.shields.io/packagist/v/pattern-lab/styleguidekit-mustache-default.svg?maxAge=2592000)](https://packagist.org/packages/pattern-lab/styleguidekit-mustache-default) [![Gitter](https://img.shields.io/gitter/room/pattern-lab/php.svg?maxAge=2592000)](https://gitter.im/pattern-lab/frontend-viewer)
 
 # Default Mustache StyleguideKit for Pattern Lab
