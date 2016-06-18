@@ -1,6 +1,11 @@
 <script>
 	var patternData = {{{ patternData }}};
 </script>
+{{# isPattern }}
+<script type="text/json" class="sg-pattern-data">
+	{{{ patternData }}}
+</script>
+{{/ isPattern }}
 
 <script>
 	/*!
@@ -14,7 +19,7 @@
 	var scriptLoader = {
 		
 		run: function(js,cb,target) {
-			var s  = document.getElementById(target+'-'+cb); 
+			var s  = document.getElementById(target+'-'+cb);
 			for (var i = 0; i < js.length; i++) {
 				var src = (typeof js[i] != "string") ? js[i].src : js[i];
 				var c   = document.createElement('script');
