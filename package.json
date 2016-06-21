@@ -1,9 +1,8 @@
 {
   "name": "styleguidekit-mustache-default",
   "description": "The default Mustache-based StyleguideKit for Pattern Lab. Contains styles and mark-up for Pattern Lab's front-end.",
-  "version": "0.1.0",
-  "dependencies": {
-  },
+  "version": "1.0.0",
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git://github.com/pattern-lab/styleguidekit-mustache-default.git"
@@ -11,20 +10,20 @@
   "bugs": "https://github.com/pattern-lab/styleguidekit-mustache-default/issues",
   "authors": [
     {
-      "name":         "Dave Olsen",
-      "email":        "dmolsen@gmail.com",
-      "homepage":     "http://dmolsen.com",
-      "role":         "Lead Developer"
+      "name": "Dave Olsen",
+      "email": "dmolsen@gmail.com",
+      "homepage": "http://dmolsen.com",
+      "role": "Lead Developer"
     },
     {
-      "name":         "Brad Frost",
-      "homepage":     "http://bradfrostweb.com",
-      "role":         "Creator"
+      "name": "Brad Frost",
+      "homepage": "http://bradfrostweb.com",
+      "role": "Creator"
     },
     {
-      "name":         "Brian Muenzenmeyer",
-      "homepage":     "http://brianmuenzenmeyer.com",
-      "role":         "Developer"
+      "name": "Brian Muenzenmeyer",
+      "homepage": "http://brianmuenzenmeyer.com",
+      "role": "Developer"
     }
   ],
   "license": "MIT"
