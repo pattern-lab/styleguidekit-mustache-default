@@ -1,16 +1,18 @@
 <!-- View All Patterns in a Pattern Sub-Type -->
-<div class="sg-main" role="main">
+<div class="pl-c-main sg-main" role="main">
   
-  <!-- Patterns -->
-  <div id="sg-patterns">
-    {{# partials }}
-      {{# patternSectionSubtype }}
-        {{> patternSectionSubtype }}
-      {{/ patternSectionSubtype }}
-      {{^ patternSectionSubtype }}
-        {{> patternSection }}
-      {{/ patternSectionSubtype }}
-    {{/ partials }}
-  </div> <!--end #sg-patterns-->
+	<!-- Index of Patterns -->
+	<div class="pl-c-pattern-index" id="sg-patterns">
+	
+		{{# partials }}
+			{{# patternSectionSubtype }}
+			{{> patternSectionSubtype }}
+			{{/ patternSectionSubtype }}
+			{{^ patternSectionSubtype }}
+			{{> patternSection }}
+			{{/ patternSectionSubtype }}
+		{{/ partials }}
 
-</div><!--end .sg-main-->
+  </div><!--end pl-c-pattern-index-->
+
+</div><!--end pl-c-main-->
