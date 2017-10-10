@@ -3,11 +3,20 @@
 
 # Default Mustache StyleguideKit for Pattern Lab
 
-The default Mustache StyleguideKit provides the basic front-end assets when using the [Mustache PatternEngine](https://github.com/pattern-lab/patternengine-php-mustache). This StyleguideKit includes Mustache templates for the "View All" views and works with the [default StyleguideKit static assets](https://github.com/pattern-lab/styleguidekit-assets-default).
+The default Mustache StyleguideKit provides the basic front-end assets when using most PatternEngines as part of the [Pattern Lab Ecosystem](http://patternlab.io/docs/advanced-ecosystem-overview.html). This StyleguideKit includes Mustache templates for the "View All" views and works with the [default StyleguideKit static assets](https://github.com/pattern-lab/styleguidekit-assets-default).
 
 ## Installation
 
-The default Mustache StyleguideKit can be installed via Composer:
+### Node
+
+Pattern Lab Node uses [npm](https://www.npmjs.com/) to manage project dependencies. To install this repository run:
+
+    npm install styleguidekit-mustache-default
+
+### PHP
+
+Pattern Lab PHP uses [Composer](https://getcomposer.org/) to manage project dependencies. 
+To install this repository:
 
     composer require pattern-lab/styleguidekit-mustache-default
 
